@@ -38,17 +38,13 @@ public class D03 : DayBase
                 {
                     number += current;
                     
-                    if (
-                        symbols.Contains((x + 1, y)) ||
-                        symbols.Contains((x - 1, y)) ||
-                        symbols.Contains((x, y + 1)) ||
-                        symbols.Contains((x, y - 1)) ||
-                        symbols.Contains((x + 1, y - 1)) ||
-                        symbols.Contains((x + 1, y + 1)) ||
-                        symbols.Contains((x - 1, y + 1)) ||
-                        symbols.Contains((x - 1, y - 1)))
+                    for (var i = -1; i < 2; i++)
+                    for (var j = -1; j < 2; j++)
                     {
-                        isValid = true;
+                        if (symbols.Contains((x + i, y + j)))
+                        {
+                            isValid = true;
+                        }
                     }
                 }
                 else 
@@ -66,8 +62,7 @@ public class D03 : DayBase
                 sum += int.Parse(number);
             }
         }
-
-
+        
         return sum;
     }
 
@@ -79,7 +74,8 @@ public class D03 : DayBase
         for (var y = 0; y < map.GetLength(1); y++)
         for (var x = 0; x < map.GetLength(0); x++)
         {
-            var current = map[y, x] + "";
+            var current = map[y, x].ToString();
+            
             if (new Regex(@"([0-9]|[\.])").IsMatch(current) == false)
             {
                 symbols.Add((x,y), new List<int>());
@@ -100,42 +96,18 @@ public class D03 : DayBase
                 if (new Regex("[0-9]").IsMatch(current))
                 {
                     number += current;
-
+                    
                     if (adjacent is not null)
                     {
                         continue;
                     }
-                    if (symbols.ContainsKey((x - 1, y)))
+                    for (var i = -1; i < 2; i++)
+                    for (var j = -1; j < 2; j++)
                     {
-                        adjacent = (x - 1, y);
-                    }
-                    if (symbols.ContainsKey((x + 1, y)))
-                    {
-                        adjacent = (x + 1, y);
-                    }
-                    if (symbols.ContainsKey((x, y + 1)))
-                    {
-                        adjacent = (x, y + 1);
-                    }
-                    if (symbols.ContainsKey((x, y -1 )))
-                    {
-                        adjacent = (x,y-1);
-                    }
-                    if (symbols.ContainsKey((x + 1, y+1)))
-                    {
-                        adjacent = (x + 1, y + 1);
-                    }
-                    if (symbols.ContainsKey((x + 1, y-1)))
-                    {
-                        adjacent = (x + 1, y - 1);
-                    }
-                    if (symbols.ContainsKey((x - 1, y+1)))
-                    {
-                        adjacent = (x - 1, y + 1);
-                    }
-                    if (symbols.ContainsKey((x - 1, y-1)))
-                    {
-                        adjacent = (x - 1, y - 1);
+                        if (symbols.ContainsKey((x + j, y + i)))
+                        { 
+                            adjacent = (x + j, y + i);
+                        }
                     }
                 }
                 else 
