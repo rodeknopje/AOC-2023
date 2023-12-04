@@ -1,8 +1,12 @@
-﻿namespace AOC.Solutions;
+﻿using System.Text.RegularExpressions;
+
+namespace AOC.Solutions;
 
 public class D04 : DayBase
 {
     protected override int Day => 4;
+
+    private Regex _numberRegex = new Regex(@"[0-9]+");
     
     public override long Solve_1()
     {
@@ -10,9 +14,9 @@ public class D04 : DayBase
         
         foreach (var line in GetInputLines())
         {
-            var nums1 = line.Split("|").First().Split(":").Last().Trim().Split(" ").Where(x => x != "");
-            var nums2 = line.Split("|").Last().Trim().Split(" ").Where(x => x != "");
-
+            var nums1 = _numberRegex.Matches(line.Split("|").First().Split(":").Last()).Select(x => x.ToString());
+            var nums2 = _numberRegex.Matches(line.Split("|").Last()).Select(x => x.ToString());;
+           
             var x = nums1.Intersect(nums2).ToArray();
 
             if (x.Any())
@@ -26,8 +30,6 @@ public class D04 : DayBase
 
     public override long Solve_2()
     {
-        var sum = 0;
-
         var lines = GetInputLines();
 
         var cards = new long[lines.Count];
@@ -37,9 +39,9 @@ public class D04 : DayBase
         for (var i = 0; i < lines.Count; i++)
         {
             var line = lines[i];
-            
-            var nums1 = line.Split("|").First().Split(":").Last().Trim().Split(" ").Where(x => x != "");
-            var nums2 = line.Split("|").Last().Trim().Split(" ").Where(x => x != "");
+
+            var nums1 = _numberRegex.Matches(line.Split("|").First().Split(":").Last()).Select(x => x.ToString());
+            var nums2 = _numberRegex.Matches(line.Split("|").Last()).Select(x => x.ToString());;
 
             var wins = nums1.Intersect(nums2).Count();
 
