@@ -7,7 +7,7 @@ public class D06 : DayBase
     public override long Solve_1()
     {
         var times = new List<int> { 47, 70, 75, 66 };
-        
+
         var distances = new List<int> { 282, 1079, 1147, 1062 };
 
         var score = 1;
@@ -34,22 +34,6 @@ public class D06 : DayBase
 
     public override long Solve_2()
     {
-        var time = 47707566l;
-        
-        var distance = 282107911471062;
-        
-        var score = 0;
-        
-        for (var j = 0; j < time; j++)
-        {
-            var success = j * (time - j) > distance;
-
-            if (success)
-            {
-                score++;
-            }
-        }
-
-        return score;
+        return Enumerable.Range(0,47707566).Count(n => n*(47707566L-n)>282107911471062);
     }
 }
