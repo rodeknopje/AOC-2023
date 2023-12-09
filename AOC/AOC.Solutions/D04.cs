@@ -30,6 +30,7 @@ public class D04 : DayBase
 
     public override long Solve_2()
     {
+
         var lines = GetInputLines();
 
         var cards = new long[lines.Count];
@@ -53,7 +54,9 @@ public class D04 : DayBase
                 }
             }
         }
-
+        
         return cards.Sum();
     }
+
+
 }

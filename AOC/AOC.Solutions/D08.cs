@@ -2,7 +2,7 @@ using System.Text.RegularExpressions;
 
 namespace AOC.Solutions;
 
-public class D08 : DayBase
+public partial class D08 : DayBase
 {
     protected override int Day => 8;
     
@@ -49,7 +49,7 @@ public class D08 : DayBase
         
         foreach (var line in lines.Skip(2))
         {
-            var matches = new Regex(@"\w+").Matches(line);
+            var matches = MyRegex().Matches(line);
 
             elements.Add(matches[0].ToString(), (matches[1].ToString(), matches[2].ToString()));
         }
@@ -59,39 +59,63 @@ public class D08 : DayBase
         var currentElements = elements.Keys.Where(x => x.Contains('A')).ToHashSet();
 
         var steps = 0;
+
+        var numbers = new List<long>();
         
-        while (true)
+        while (currentElements.Any())
         {
+            // if (currentElements.Count == 1)
+            // {
+            //     Console.WriteLine("hoi");
+            // }
+            
             var newCurrentElements = new HashSet<string>();
             
             var direction = directions[0];
+            
+            steps++;
+
             
             foreach (var element in currentElements)
             {
                 var newElement = direction == 'L' ? elements[element].left : elements[element].right;
 
-                newCurrentElements.Add(newElement);
-            }
-
-            if (currentElements.Count > newCurrentElements.Count)
-            {
-                Console.WriteLine(newCurrentElements.Count);
+                
+                if(newElement.Contains('Z'))
+                {
+                    numbers.Add(steps);
+                }
+                else
+                {
+                    newCurrentElements.Add(newElement);
+                }
             }
             
-            steps++;
+            
 
             currentElements = newCurrentElements;
-
-            if (newCurrentElements.All(x => x.Contains('Z')))
-            {
-                break;
-            }
             
             directions += direction;
             directions = directions.Remove(0, 1);
 
         }
 
-        return steps;
+        return GetLeasCommonMultiple(numbers.ToArray());
     }
+    
+    public long GetLeasCommonMultiple(long[] numbers)
+    {
+        var highest = numbers.Max();
+        var current = highest;
+
+        while (numbers.All(x => x % current == 0) == false)
+        {
+            current += highest;
+        }
+
+        return current;
+    }
+
+    [GeneratedRegex("\\w+")]
+    private static partial Regex MyRegex();
 }
